@@ -37,6 +37,17 @@ namespace UnitTestProject1
                
             }
         }
+        [TestMethod]
+        [Obsolete]
+        public void XCSAttacking()
+        {
+            using(IWebDriver driver = new ChromeDriver())
+            {
+                NisExpresTestPage NEPage = new NisExpresTestPage(driver);
+                NEPage.NavigateTo();
+                NEPage.CSSWriting();
+            }
+        }
        
     }
 }
