@@ -89,6 +89,7 @@ namespace UnitTestProject1
             DriverHelper.WaitExplicitlyVisable(Driver, "div.container");
             List<string> strongList = new List<string>();
             DriverHelper.ListElementsToString(Driver, "div.modal-body strong", strongList);
+            Trace.WriteLine("\nBolded text is:");
             for (int i = 0; i < strongList.Count; i++)
             {
                 if (strongList[i] != string.Empty)
@@ -98,6 +99,20 @@ namespace UnitTestProject1
                 }
                 
             }
+            IWebElement submitButton = Driver.FindElement(By.CssSelector("button.btn.btn-primary.close-button"));
+            if (submitButton.Enabled)
+            {
+                Trace.WriteLine($"____________\nSubmit button:\n" +
+                    $"class: {submitButton.GetAttribute("class")}\n" +
+                    $"data-bss-hover-animate: {submitButton.GetAttribute("data-bss-hover-animate")}\n" +
+                    $"data-dismiss: {submitButton.GetAttribute("data-dismiss")}\n" +
+                    $"type: {submitButton.GetAttribute("type")} \n" +
+                    $"style: {submitButton.GetAttribute("style")} \n");
+               
+            }
+            DriverHelper.FindElementWithJS_Click(Driver, "button.btn.btn-primary.close-button");
+            //DriverHelper.WaitExplicitlyClickable_Click(Driver, "button.btn.btn-primary.close-button");
+            //Driver.FindElement(By.CssSelector("button.btn.btn-primary.close-button")).Click();
         }
 
         public ReadOnlyCollection<IWebElement> listElements(string elementCssSelector) => Driver.FindElements(By.CssSelector(elementCssSelector));
@@ -126,7 +141,7 @@ namespace UnitTestProject1
             Driver.FindElement(By.CssSelector("button.dropdown-item.active")).Click();
             IWebElement endStation = Driver.FindElement(By.CssSelector("section#travel-section div div div:nth-of-type(2) input"));
             endStation.SendKeys("novi sad");
-            DriverHelper.WaitExplicitlyClickable(Driver, "button.dropdown-item.active");
+            DriverHelper.WaitExplicitlyClickable_Click(Driver, "button.dropdown-item.active");
             //Driver.FindElement(By.CssSelector("button.dropdown-item.active")).Click();
 
             DriverHelper.WaitExplicitlyVisable(Driver, "button.btn.btn-primary.w-100.top-btn");

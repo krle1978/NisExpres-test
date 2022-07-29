@@ -26,12 +26,20 @@ namespace UnitTestProject1
             IWebElement elementWaited = wait.Until(ExpectedConditions.ElementIsVisible(By.CssSelector(CssSelectorElement)));
         }
         [Obsolete]
-        public static void WaitExplicitlyClickable(IWebDriver driver, string CssSelectorElement)
+        public static void WaitExplicitlyClickable_Click(IWebDriver driver, string CssSelectorElement)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(15));
             IWebElement elementWaited = wait.Until(ExpectedConditions.ElementToBeClickable(By.CssSelector(CssSelectorElement)));
             elementWaited.Click();
         }
+
+        public static void FindElementWithJS_Click(IWebDriver driver,string cssCelectorPath)
+        {
+            string script = $"document.getElementByCssSelector('{cssCelectorPath}').click()";
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+            js.ExecuteScript(script);
+        }
+
         public static ReadOnlyCollection<IWebElement> Elements(IWebDriver driver, string elementCssSelector) =>  driver.FindElements(By.CssSelector(elementCssSelector));
 
         public static void ListElementsToString(IWebDriver driver,string elementCssSelector, List<string> listTextStrings)
