@@ -60,12 +60,61 @@ namespace UnitTestProject1
             Driver.FindElement(By.Id("button-putovanja")).Click();
             DriverHelper.Pause();
             Driver.FindElement(By.Id("button-putovanja")).Click();
-            DriverHelper.WaitExplicitly(Driver, "div#main-kolona-linija");
+            DriverHelper.WaitExplicitlyVisable(Driver, "div#main-kolona-linija");
             Trace.WriteLine("Bus lines are:");
             DriverHelper.ListElementsToText(Driver, "div.row.tabela-row-ruta");
             DriverHelper.Pause();
 
         }
+
+        [Obsolete]
+        public void AttributsElement()
+        {
+            IWebElement iconRezervacija = Driver.FindElement(By.CssSelector("img#ikonica-1")), 
+                iconInfo = Driver.FindElement(By.CssSelector("button.btn")), 
+                icoAktuel = Driver.FindElement(By.CssSelector("img#ikonica-2"));
+            string icoRezSrcAttr = iconRezervacija.GetAttribute("src"), 
+                icoRezCssValue = iconRezervacija.GetCssValue("src"),
+                infoAttrClass = iconInfo.GetAttribute("class"),
+                infoAttrType = iconInfo.GetAttribute("type"),
+                infoAttrStyle = iconInfo.GetAttribute("style");
+
+            Trace.WriteLine($"Icon Rezervacija:\n" +
+                $"SRC: {icoRezSrcAttr}\nCSS Value: {icoRezCssValue}\n_____\n" +
+                $"Icon Informacije:\n" +
+                $"class: {infoAttrClass}\nType: {infoAttrType}\nStyle: {infoAttrStyle}");
+
+            icoAktuel.Click();
+            DriverHelper.Pause();
+            DriverHelper.WaitExplicitlyVisable(Driver, "div.container");
+            List<string> strongList = new List<string>();
+            DriverHelper.ListElementsToString(Driver, "div.modal-body strong", strongList);
+            Trace.WriteLine("\nBolded text is:");
+            for (int i = 0; i < strongList.Count; i++)
+            {
+                if (strongList[i] != string.Empty)
+                {
+                    Trace.WriteLine(strongList[i]);
+
+                }
+                
+            }
+            IWebElement submitButton = Driver.FindElement(By.CssSelector("button.btn.btn-primary.close-button"));
+            if (submitButton.Enabled)
+            {
+                Trace.WriteLine($"____________\nSubmit button:\n" +
+                    $"class: {submitButton.GetAttribute("class")}\n" +
+                    $"data-bss-hover-animate: {submitButton.GetAttribute("data-bss-hover-animate")}\n" +
+                    $"data-dismiss: {submitButton.GetAttribute("data-dismiss")}\n" +
+                    $"type: {submitButton.GetAttribute("type")} \n" +
+                    $"style: {submitButton.GetAttribute("style")} \n");
+               
+            }
+            DriverHelper.FindElementWithJS_Click(Driver, "button.btn.btn-primary.close-button");
+            //DriverHelper.WaitExplicitlyClickable_Click(Driver, "button.btn.btn-primary.close-button");
+            //Driver.FindElement(By.CssSelector("button.btn.btn-primary.close-button")).Click();
+        }
+
         public ReadOnlyCollection<IWebElement> listElements(string elementCssSelector) => Driver.FindElements(By.CssSelector(elementCssSelector));
         public List<string> ElementTextOutput(string elementCssSelector)
         {
@@ -88,14 +137,14 @@ namespace UnitTestProject1
             IWebElement startStation = Driver.FindElement(By.CssSelector("input.ng-untouched.ng-pristine.ng-valid"));
             startStation.Clear();
             startStation.SendKeys("beograd");
-            DriverHelper.WaitExplicitly(Driver, "button.dropdown-item.active");
+            DriverHelper.WaitExplicitlyVisable(Driver, "button.dropdown-item.active");
             Driver.FindElement(By.CssSelector("button.dropdown-item.active")).Click();
             IWebElement endStation = Driver.FindElement(By.CssSelector("section#travel-section div div div:nth-of-type(2) input"));
             endStation.SendKeys("novi sad");
-            DriverHelper.WaitExplicitly(Driver, "button.dropdown-item.active");
-            Driver.FindElement(By.CssSelector("button.dropdown-item.active")).Click();
+            DriverHelper.WaitExplicitlyClickable_Click(Driver, "button.dropdown-item.active");
+            //Driver.FindElement(By.CssSelector("button.dropdown-item.active")).Click();
 
-            DriverHelper.WaitExplicitly(Driver, "button.btn.btn-primary.w-100.top-btn");
+            DriverHelper.WaitExplicitlyVisable(Driver, "button.btn.btn-primary.w-100.top-btn");
             Driver.FindElement(By.CssSelector("button.btn.btn-primary.w-100.top-btn")).Click();
 
             List<string> listText = new List<string>();
@@ -121,7 +170,7 @@ namespace UnitTestProject1
             Driver.FindElement(By.CssSelector("span[title='Izaberite.....']")).Click();
             IWebElement secoTown = Driver.FindElement(By.CssSelector("input[class='select2-search__field']"));
             secoTown.SendKeys("beograd");
-            DriverHelper.WaitExplicitly(Driver, "ul[role='listbox']");
+            DriverHelper.WaitExplicitlyVisable(Driver, "ul[role='listbox']");
             List<string> listElements = new List<string>();
             DriverHelper.ListElementsToString(Driver, "ul[role='listbox']", listElements);
             foreach (string element in listElements)
@@ -140,9 +189,9 @@ namespace UnitTestProject1
             Driver.FindElement(By.Id("button-putovanja")).Click();
             DriverHelper.Pause();
             Driver.FindElement(By.Id("button-putovanja")).Click();
-            DriverHelper.WaitExplicitly(Driver, "div#main-kolona-linija");
+            DriverHelper.WaitExplicitlyVisable(Driver, "div#main-kolona-linija");
             Trace.WriteLine("Bus lines are:");
-            DriverHelper.WaitExplicitly(Driver, "div.row.tabela-row-ruta");
+            DriverHelper.WaitExplicitlyVisable(Driver, "div.row.tabela-row-ruta");
             DriverHelper.ListElementsToText(Driver, "div.row.tabela-row-ruta");
             DriverHelper.Pause();
         }

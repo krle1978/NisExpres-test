@@ -48,6 +48,16 @@ namespace UnitTestProject1
                 NEPage.CSSWriting();
             }
         }
-       
+        [TestMethod]
+        [Obsolete]
+        public void ElementExam()
+        {
+            using (IWebDriver driver = new ChromeDriver())
+            {
+                NisExpresTestPage NEPage = new NisExpresTestPage(driver);
+                NEPage.NavigateTo();
+                NEPage.AttributsElement();
+            }
+        }
     }
 }
