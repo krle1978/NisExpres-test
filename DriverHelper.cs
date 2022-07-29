@@ -35,7 +35,7 @@ namespace UnitTestProject1
 
         public static void FindElementWithJS_Click(IWebDriver driver,string cssCelectorPath)
         {
-            string script = $"document.getElementByCssSelector('{cssCelectorPath}').click()";
+            string script = $"document.querySelector('{cssCelectorPath}').click()";
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
             js.ExecuteScript(script);
         }

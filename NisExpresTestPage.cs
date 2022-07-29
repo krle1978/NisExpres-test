@@ -97,7 +97,6 @@ namespace UnitTestProject1
                     Trace.WriteLine(strongList[i]);
 
                 }
-                
             }
             IWebElement submitButton = Driver.FindElement(By.CssSelector("button.btn.btn-primary.close-button"));
             if (submitButton.Enabled)
