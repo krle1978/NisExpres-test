@@ -20,7 +20,7 @@ namespace UnitTestProject1
             {
                 NisExpresTestPage NEPage = new NisExpresTestPage(driver);
                 NEPage.NavigateTo();
-                NEPage.DestinationCheck("nis", "beograd");
+                NEPage.DestinationCheck("niš", "beograd");
                 DriverHelper.Pause();
             }
 
@@ -57,6 +57,29 @@ namespace UnitTestProject1
                 NisExpresTestPage NEPage = new NisExpresTestPage(driver);
                 NEPage.NavigateTo();
                 NEPage.AttributsElement();
+            }
+        }
+        [TestMethod]
+        [Obsolete]
+        public void TravelingBeogradNoviSadYesturday()
+        {
+            using (IWebDriver driver = new ChromeDriver())
+            {
+                NisExpresTestPage NEPage = new NisExpresTestPage(driver);
+                NEPage.NavigateTo();
+                NEPage.TravelingAssert();
+            }
+        }
+        [TestMethod]
+        [Obsolete]
+        public void EmpltyFieldsAllert()
+        {
+            using (IWebDriver driver = new ChromeDriver())
+            {
+                NisExpresTestPage NEPage = new NisExpresTestPage(driver);
+                NEPage.NavigateTo();
+                NEPage.EmptyFieldsAssert();
+                DriverHelper.Pause();
             }
         }
     }
