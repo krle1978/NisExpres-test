@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,6 +12,7 @@ namespace UnitTestProject1
 {
     public class NisExpresTestPage
     {
+        
         private readonly IWebDriver Driver;
         public NisExpresTestPage(IWebDriver driver)
         {
@@ -33,14 +35,9 @@ namespace UnitTestProject1
         [Obsolete]
         public void DestinationCheck( string firstTown, string secoundTown)
         {
+            Asserttation assert = new Asserttation(Driver);
             Driver.FindElement(By.ClassName("select2-selection__arrow")).Click();
             Driver.FindElement(By.ClassName("select2-search__field")).SendKeys(firstTown);
-            //List<string> towns = ElementTextOutput("ul.select2-results__options li");
-            //Trace.WriteLine("Towns are:");
-            //for (int i = 0; i < towns.Count; i++)
-            //{
-            //    Trace.WriteLine($"{i}: {towns[i]}");
-            //}
             Trace.WriteLine($"Start stationen set:");
             DriverHelper.ListElementsToText(Driver, "ul.select2-results__options li");
             Driver.FindElement(By.CssSelector("ul.select2-results__options li:nth-of-type(4)")).Click();
@@ -50,6 +47,7 @@ namespace UnitTestProject1
             Trace.WriteLine($"End stationen set:");
             DriverHelper.ListElementsToText(Driver, "ul.select2-results__options li");
             secoTown.SendKeys(Keys.Enter);
+            assert.IsTextEqual("span.select2-selection__rendered",firstTown);
             IWebElement travelDate = Driver.FindElement(By.Id("vrijeme"));
             travelDate.Click();
             string day = DateTime.Now.Day.ToString(), month = DateTime.Now.Month.ToString(), year = DateTime.Now.Year.ToString();
@@ -62,9 +60,54 @@ namespace UnitTestProject1
             Driver.FindElement(By.Id("button-putovanja")).Click();
             DriverHelper.WaitExplicitlyVisable(Driver, "div#main-kolona-linija");
             Trace.WriteLine("Bus lines are:");
-            DriverHelper.ListElementsToText(Driver, "div.row.tabela-row-ruta");
+            DriverHelper.ListElementsToText(Driver, "div#column-putovanja");
             DriverHelper.Pause();
 
+        }
+
+        [Obsolete]
+        internal void EmptyFieldsAssert()
+        {
+            Asserttation assert = new Asserttation(Driver);
+            DriverHelper.HoverOverButton(Driver,"div.nav-item.dropdown.shadow.dropdown-objekti.show");
+            Driver.FindElement(By.CssSelector("ul.navbar-nav.d-md-flex.justify-content-md-end li:nth-of-type(2) div div a:nth-of-type(2)")).Click();
+            DriverHelper.WaitExplicitlyClickable_Click(Driver,"button.btn.btn-primary.w-100.top-btn");
+            assert.AllertWindow();
+            Driver.FindElement(By.CssSelector("button.btn.btn-primary.alert-close-button")).Click();
+        }
+
+        [Obsolete]
+        internal void TravelingAssert()
+        {
+            Asserttation assert = new Asserttation(Driver);
+            Driver.FindElement(By.ClassName("select2-selection__arrow")).Click();
+            IWebElement firstStation = Driver.FindElement(By.ClassName("select2-search__field"));
+            firstStation.SendKeys("beograd");
+            Trace.WriteLine($"Start stationen set:");
+            DriverHelper.ListElementsToText(Driver, "ul.select2-results__options li");
+            firstStation.SendKeys(Keys.Enter);
+            //firstStation.SendKeys(Keys.Tab);
+            Driver.FindElement(By.CssSelector("span[title='Izaberite.....']")).Click();
+            IWebElement secoTown = Driver.FindElement(By.CssSelector("input[class='select2-search__field']"));
+            secoTown.SendKeys("novi sad");
+            Trace.WriteLine($"End stationen set:");
+            DriverHelper.ListElementsToText(Driver, "ul.select2-results__options li");
+            secoTown.SendKeys(Keys.Enter);
+            
+            IWebElement travelDate = Driver.FindElement(By.Id("vrijeme"));
+            travelDate.Click();
+            string day = DateTime.Now.Day.ToString(), month = DateTime.Now.Month.ToString(), year = DateTime.Now.Year.ToString();
+            int yesturday = int.Parse(day)-1;
+            travelDate.SendKeys(yesturday.ToString());
+            travelDate.SendKeys(month);
+            travelDate.SendKeys(Keys.Tab);
+            travelDate.SendKeys(year);
+            Driver.FindElement(By.Id("button-putovanja")).Click();
+            DriverHelper.Pause();
+            Driver.FindElement(By.Id("button-putovanja")).Click();
+            DriverHelper.WaitExplicitlyVisable(Driver, "div#main-kolona-linija");
+            assert.IsYesturday();
+            DriverHelper.Pause();
         }
 
         [Obsolete]
@@ -110,7 +153,7 @@ namespace UnitTestProject1
                
             }
             DriverHelper.FindElementWithJS_Click(Driver, "button.btn.btn-primary.close-button");
-            //DriverHelper.WaitExplicitlyClickable_Click(Driver, "button.btn.btn-primary.close-button");
+            DriverHelper.WaitExplicitlyClickable_Click(Driver, "button.btn.btn-primary.close-button");
             //Driver.FindElement(By.CssSelector("button.btn.btn-primary.close-button")).Click();
         }
 
